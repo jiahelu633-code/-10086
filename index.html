@@ -1,50 +1,481 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>tkzz.store</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TKZZ Store - AI 工具导航 + 资源站</title>
   <style>
-    body{
-      margin:0;
-      font-family:Arial, sans-serif;
-      background:#111827;
-      color:white;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:100vh;
-      text-align:center;
-      padding:20px;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .box{
-      max-width:700px;
+
+    body {
+      font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #0f172a;
+      color: #ffffff;
+      line-height: 1.6;
     }
-    h1{
-      font-size:48px;
-      margin-bottom:16px;
+
+    a {
+      text-decoration: none;
+      color: inherit;
     }
-    p{
-      font-size:20px;
-      line-height:1.8;
-      color:#d1d5db;
+
+    .container {
+      width: min(1200px, 92%);
+      margin: 0 auto;
     }
-    a{
-      display:inline-block;
-      margin-top:24px;
-      padding:12px 20px;
-      background:#2563eb;
-      color:white;
-      text-decoration:none;
-      border-radius:10px;
+
+    header {
+      padding: 72px 0 40px;
+      background: linear-gradient(135deg, #0f172a 0%, #111827 45%, #1d4ed8 100%);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 0 30px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #bfdbfe;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 7vw, 68px);
+      margin-bottom: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: clamp(18px, 2.5vw, 24px);
+      color: #dbeafe;
+      margin-bottom: 16px;
+    }
+
+    .desc {
+      max-width: 760px;
+      margin: 0 auto 28px;
+      color: #cbd5e1;
+      font-size: 17px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 22px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: bold;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #e5e7eb;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.14);
+      transform: translateY(-2px);
+    }
+
+    section {
+      padding: 64px 0;
+    }
+
+    .section-title {
+      font-size: 32px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .section-desc {
+      text-align: center;
+      color: #94a3b8;
+      max-width: 760px;
+      margin: 0 auto 32px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .tools-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .resources-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      transition: 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #2563eb;
+    }
+
+    .card h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #cbd5e1;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: #93c5fd;
+      margin-bottom: 14px;
+    }
+
+    .small-tag {
+      display: inline-block;
+      font-size: 12px;
+      background: rgba(37, 99, 235, 0.15);
+      color: #93c5fd;
+      padding: 5px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    .card-actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .link-btn {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .link-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .ghost-btn {
+      display: inline-block;
+      background: transparent;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .ghost-btn:hover {
+      border-color: #60a5fa;
+      color: #ffffff;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #111827 0%, #172554 100%);
+      border: 1px solid #1d4ed8;
+    }
+
+    .recommend-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .recommend-item {
+      background: #0b1220;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .recommend-item h4 {
+      margin-bottom: 8px;
+      font-size: 19px;
+    }
+
+    .recommend-item p {
+      color: #cbd5e1;
+      font-size: 15px;
+    }
+
+    .about-box {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 20px;
+      padding: 28px;
+      color: #dbeafe;
+    }
+
+    footer {
+      padding: 30px 0 50px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 14px;
+      border-top: 1px solid #1f2937;
+      margin-top: 20px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding-top: 48px;
+      }
+
+      .card h3 {
+        font-size: 20px;
+      }
+
+      .section-title {
+        font-size: 28px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>欢迎来到 tkzz.store</h1>
-    <p>这是我的第一个网站。<br>以后我会把更多内容放到这里。</p>
-    <a href="https://chatgpt.com" target="_blank">点我试试看</a>
-  </div>
+  <header>
+    <div class="container hero">
+      <div class="tag">TKZZ Store · AI 工具导航 + 实用资源整理站</div>
+      <h1>TKZZ Store</h1>
+      <div class="subtitle">帮你更快找到真正好用的 AI 工具</div>
+      <p class="desc">
+        为学生、创作者和新手整理常用 AI 工具与资源。少踩坑，少到处找，点进去就能直接开始用。
+      </p>
+      <div class="hero-buttons">
+        <a class="btn btn-primary" href="#tools">浏览工具</a>
+        <a class="btn btn-secondary" href="#resources">查看资源</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="tools">
+      <div class="container">
+        <h2 class="section-title">AI 工具导航</h2>
+        <p class="section-desc">
+          我把常用工具分成了写作、图片、视频、学习四类。点击按钮就会直接跳转到对应网站。
+        </p>
+
+        <div class="grid tools-grid">
+          <div class="card">
+            <div class="small-tag">写作类</div>
+            <h3>ChatGPT</h3>
+            <p>适合写作、改文案、头脑风暴、学习问答。</p>
+            <div class="meta">适合：新手 / 学生 / 创作者</div>
+            <div class="card-actions">
+              <a class="link-btn" href="https://chatgpt.com" target="_blank">前往使用</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="small-tag">写作类</div>
+            <h3>DeepL 翻译</h3>
+            <p>翻译自然，适合英语学习、网页翻译和文案处理。</p>
+            <div class="meta">适合：英语学习 / 阅读 / 翻译</div>
+            <div class="card-actions">
+              <a class="link-btn" href="https://www.deepl.com" target="_blank">前往使用</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="small-tag">图片类</div>
+            <h3>Canva</h3>
+            <p>做海报、封面、社媒图非常方便，上手快。</p>
+            <div class="meta">适合：设计新手 / 做图 / 演示</div>
+            <div class="card-actions">
+              <a class="link-btn" href="https://www.canva.com" target="_blank">前往使用</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="small-tag">图片类</div>
+            <h3>remove.bg</h3>
+            <p>一键抠图，适合做素材、做海报、做封面。</p>
+            <div class="meta">适合：剪辑 / 美工 / 素材处理</div>
+            <div class="card-actions">
+              <a class="link-btn" href="https://www.remove.bg" target="_blank">前往使用</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="small-tag">视频类</div>
+            <h3>CapCut 剪映</h3>
+            <p>做字幕、剪视频、加特效都比较方便。</p>
+            <div class="meta">适合：短视频 / 剪辑 / 创作者</div>
+            <div class="card-actions">
+              <a class="link-btn" href="https://www.capcut.com" target="_blank">前往使用</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="small-tag">视频类</div>
+            <h3>ElevenLabs</h3>
+            <p>AI 配音和语音生成很强，适合做旁白和角色音。</p>
+            <div class="meta">适合：配音 / 内容制作 / 旁白</div>
+            <div class="card-actions">
+              <a class="link-btn" href="https://elevenlabs.io" target="_blank">前往使用</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="small-tag">学习类</div>
+            <h3>Perplexity</h3>
+            <p>适合快速查资料、搜答案、整理信息。</p>
+            <div class="meta">适合：搜索 / 学习 / 资料整理</div>
+            <div class="card-actions">
+              <a class="link-btn" href="https://www.perplexity.ai" target="_blank">前往使用</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="small-tag">学习类</div>
+            <h3>Notion</h3>
+            <p>适合记笔记、做计划、整理学习内容和项目。</p>
+            <div class="meta">适合：计划管理 / 笔记 / 整理</div>
+            <div class="card-actions">
+              <a class="link-btn" href="https://www.notion.so" target="_blank">前往使用</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources">
+      <div class="container">
+        <h2 class="section-title">实用资源区</h2>
+        <p class="section-desc">
+          这里放一些能直接用的模板和资源。现在先做成按钮跳转，后面你可以再换成你自己的页面或下载文件。
+        </p>
+
+        <div class="grid resources-grid">
+          <div class="card highlight">
+            <h3>AI 提问模板</h3>
+            <p>适合不知道怎么向 AI 提问的人。后面你可以把这里改成你自己的模板页面。</p>
+            <div class="card-actions">
+              <a class="link-btn" href="https://chatgpt.com" target="_blank">立即查看</a>
+              <a class="ghost-btn" href="#about">了解说明</a>
+            </div>
+          </div>
+
+          <div class="card highlight">
+            <h3>文案模板区</h3>
+            <p>可用于短视频标题、产品介绍、宣传文案、活动文案。</p>
+            <div class="card-actions">
+              <a class="link-btn" href="https://www.notion.so" target="_blank">打开资源</a>
+            </div>
+          </div>
+
+          <div class="card highlight">
+            <h3>学习工具模板</h3>
+            <p>可以放学习计划、背书打卡、复习清单、错题整理模板。</p>
+            <div class="card-actions">
+              <a class="link-btn" href="https://www.notion.so" target="_blank">查看模板</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="recommend">
+      <div class="container">
+        <h2 class="section-title">精选推荐</h2>
+        <p class="section-desc">
+          不想一个个看？直接看我整理好的推荐入口。
+        </p>
+
+        <div class="recommend-list">
+          <div class="recommend-item">
+            <h4>新手最适合</h4>
+            <p>ChatGPT + Canva。一个负责想法和文字，一个负责把内容做出来。</p>
+          </div>
+
+          <div class="recommend-item">
+            <h4>学生常用</h4>
+            <p>ChatGPT + Perplexity + DeepL。问问题、查资料、翻译都方便。</p>
+          </div>
+
+          <div class="recommend-item">
+            <h4>做视频常用</h4>
+            <p>CapCut + ElevenLabs。剪辑、字幕、配音一套下来很顺。</p>
+          </div>
+
+          <div class="recommend-item">
+            <h4>做图最快</h4>
+            <p>Canva + remove.bg。一个做版式，一个负责抠图。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">关于 TKZZ Store</h2>
+        <div class="about-box">
+          <p>
+            TKZZ Store 是一个整理 AI 工具和实用资源的小站。
+            这个网站的目标不是把工具堆得很多，而是把真正能解决实际问题、点进去就能直接用的内容整理出来。
+          </p>
+          <br />
+          <p>
+            后面你可以继续往里面加：
+            自己的资源页、学习模板、AI 提示词、作品展示、下载页，甚至做成你自己的数字资源站。
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 TKZZ Store · AI 工具导航 + 实用资源整理站
+    </div>
+  </footer>
 </body>
 </html>
