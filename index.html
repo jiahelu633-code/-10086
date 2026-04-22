@@ -1,481 +1,805 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TKZZ Store - AI 工具导航 + 资源站</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>三四月认知复盘 · 吕嘉禾</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe6;
+    --paper-2:#ece6d8;
+    --ink:#1c1b18;
+    --ink-soft:#3a3833;
+    --ink-mute:#6a665d;
+    --rule:#c7bfae;
+    --accent:#2f5d4e;        /* 沉静复古绿 */
+    --accent-soft:#e1e9e0;
+    --accent-deep:#1e3e33;
+    --amber:#a86a2f;          /* 暖色强调,点睛用 */
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(47,93,78,.06), transparent 60%),
+      radial-gradient(800px 500px at 0% 110%, rgba(168,106,47,.05), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Noto Serif SC","Songti SC","Source Han Serif SC",serif;
+    font-weight:400;
+    line-height:1.85;
+    font-size:17px;
+    letter-spacing:.01em;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  ::selection{background:var(--accent);color:var(--paper)}
 
-    body {
-      font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: #0f172a;
-      color: #ffffff;
-      line-height: 1.6;
-    }
+  /* ——— 纸张纹理 ——— */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:0;
+    background-image:
+      radial-gradient(rgba(28,27,24,.035) 1px, transparent 1px),
+      radial-gradient(rgba(28,27,24,.02) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1px 1px;
+    mix-blend-mode:multiply;
+  }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+  .wrap{
+    position:relative;z-index:1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 28px 160px;
+  }
 
-    .container {
-      width: min(1200px, 92%);
-      margin: 0 auto;
-    }
+  /* ——— 顶部导览 ——— */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding: 22px 0 18px;
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+    border-bottom:1px solid var(--rule);
+  }
+  .topbar .crest{display:flex;align-items:center;gap:10px}
+  .crest .dot{width:8px;height:8px;background:var(--accent);border-radius:50%}
+  .topbar .meta{color:var(--ink-mute)}
 
-    header {
-      padding: 72px 0 40px;
-      background: linear-gradient(135deg, #0f172a 0%, #111827 45%, #1d4ed8 100%);
-    }
+  /* ——— 封面 ——— */
+  .cover{
+    padding: 110px 0 80px;
+    position:relative;
+  }
+  .cover .eyebrow{
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:34px;
+  }
+  .cover h1{
+    font-family:"Noto Serif SC",serif;
+    font-weight:900;
+    font-size: clamp(44px, 7.2vw, 82px);
+    line-height:1.08;
+    margin:0 0 28px;
+    letter-spacing:-.01em;
+  }
+  .cover h1 .mark{
+    color:var(--accent);
+    font-style:normal;
+    position:relative;
+    display:inline-block;
+  }
+  .cover h1 .mark::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:-6px;
+    height:10px;
+    background:
+      repeating-linear-gradient(
+        to right,
+        var(--accent) 0 6px,
+        transparent 6px 10px
+      );
+    opacity:.35;
+  }
+  .cover .subtitle{
+    font-family:"Cormorant Garamond",serif;
+    font-style:italic;
+    font-size: clamp(20px, 2.4vw, 26px);
+    color:var(--ink-soft);
+    margin: 0 0 48px;
+    max-width: 580px;
+    line-height:1.5;
+  }
+  .cover .signature{
+    display:grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items:center;
+    padding-top: 24px;
+    border-top:1px solid var(--rule);
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    letter-spacing:.16em;
+    color:var(--ink-mute);
+    text-transform:uppercase;
+  }
+  .cover .signature .name{color:var(--ink);font-weight:500}
+  .cover .signature .filler{
+    height:1px;background:var(--rule);
+  }
 
-    .hero {
-      text-align: center;
-      padding: 40px 0 30px;
-    }
+  /* ——— 章节标识 ——— */
+  .chapter{
+    margin: 96px 0 28px;
+    display:flex;align-items:baseline;gap:18px;
+  }
+  .chapter .num{
+    font-family:"Cormorant Garamond",serif;
+    font-style:italic;
+    font-size:40px;
+    color:var(--accent);
+    line-height:1;
+    font-weight:500;
+  }
+  .chapter .bar{
+    flex:1;height:1px;background:var(--rule);
+    transform:translateY(-6px);
+  }
+  .chapter .tag{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.24em;color:var(--ink-mute);
+    text-transform:uppercase;
+  }
+  h2.section{
+    font-family:"Noto Serif SC",serif;
+    font-weight:700;
+    font-size: clamp(28px, 3.6vw, 38px);
+    line-height:1.25;
+    margin: 0 0 28px;
+    letter-spacing:-.005em;
+  }
+  h3.sub{
+    font-family:"Noto Serif SC",serif;
+    font-weight:600;
+    font-size:19px;
+    margin: 40px 0 12px;
+    color:var(--ink);
+    display:flex;align-items:center;gap:12px;
+  }
+  h3.sub::before{
+    content:"";
+    display:inline-block;
+    width:18px;height:1px;background:var(--accent);
+    flex-shrink:0;
+  }
 
-    .tag {
-      display: inline-block;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: #bfdbfe;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
+  p{margin: 0 0 1.1em}
+  p.lede{
+    font-size: 20px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    font-weight:400;
+    margin-bottom: 28px;
+  }
 
-    h1 {
-      font-size: clamp(36px, 7vw, 68px);
-      margin-bottom: 14px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
+  /* ——— 拉大引言 ——— */
+  .pull{
+    margin: 44px -18px;
+    padding: 28px 32px 28px 34px;
+    border-left: 3px solid var(--accent);
+    background: linear-gradient(to right, var(--accent-soft), transparent 80%);
+    font-family:"Noto Serif SC",serif;
+    font-size: 21px;
+    font-weight:500;
+    line-height:1.65;
+    color:var(--ink);
+    position:relative;
+  }
+  .pull::before{
+    content:"“";
+    position:absolute;
+    left:10px;top:-6px;
+    font-family:"Cormorant Garamond",serif;
+    font-size:72px;
+    color:var(--accent);
+    opacity:.25;
+    line-height:1;
+  }
+  .pull .attr{
+    display:block;
+    margin-top:10px;
+    font-family:"Cormorant Garamond",serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--ink-mute);
+    font-weight:400;
+  }
 
-    .subtitle {
-      font-size: clamp(18px, 2.5vw, 24px);
-      color: #dbeafe;
-      margin-bottom: 16px;
-    }
+  /* ——— 判定卡 ——— */
+  .verdict{
+    margin: 36px 0;
+    padding: 26px 28px;
+    border: 1px solid var(--rule);
+    background: rgba(255,255,255,.35);
+    position:relative;
+  }
+  .verdict .label{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ink-mute);
+    margin-bottom:12px;
+  }
+  .verdict .statement{
+    font-family:"Noto Serif SC",serif;
+    font-weight:600;
+    font-size:20px;
+    color:var(--accent-deep);
+    line-height:1.55;
+    margin:0;
+  }
+  .verdict.warn{
+    border-left:3px solid var(--amber);
+  }
+  .verdict.warn .statement{color:#704417}
 
-    .desc {
-      max-width: 760px;
-      margin: 0 auto 28px;
-      color: #cbd5e1;
-      font-size: 17px;
-    }
+  /* ——— 数据行 ——— */
+  .datarow{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 28px 0 12px;
+  }
+  .datarow .cell{
+    background: var(--paper);
+    padding: 22px 20px;
+  }
+  .datarow .k{
+    font-family:"JetBrains Mono",monospace;
+    font-size:10px;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--ink-mute);margin-bottom:8px;
+  }
+  .datarow .v{
+    font-family:"Cormorant Garamond",serif;
+    font-size:34px;
+    font-weight:500;
+    color:var(--ink);
+    line-height:1.1;
+  }
+  .datarow .v em{
+    font-style:normal;
+    font-size:15px;
+    color:var(--ink-mute);
+    font-family:"Noto Serif SC",serif;
+    margin-left:4px;
+  }
+  .datarow .note{
+    font-size:13px;
+    color:var(--ink-mute);
+    margin-top:8px;
+    line-height:1.5;
+  }
 
-    .hero-buttons {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+  /* ——— 偏离评分 ——— */
+  .gauge{
+    margin: 30px 0 40px;
+    padding: 22px 24px;
+    border: 1px solid var(--rule);
+    background: rgba(255,255,255,.3);
+  }
+  .gauge .track{
+    position:relative;
+    height:6px;
+    background: var(--paper-2);
+    margin: 18px 0 12px;
+    border-radius: 3px;
+  }
+  .gauge .fill{
+    position:absolute; left:0; top:0; bottom:0;
+    background: linear-gradient(to right, var(--accent), var(--amber));
+    border-radius:3px;
+  }
+  .gauge .ticks{
+    display:flex;justify-content:space-between;
+    font-family:"JetBrains Mono",monospace;
+    font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-mute);
+  }
+  .gauge .marker{
+    position:absolute;
+    top:-8px;
+    width:2px; height:22px;
+    background:var(--ink);
+  }
+  .gauge .marker::after{
+    content:"你在这";
+    position:absolute;
+    top:-22px;
+    left:50%; transform:translateX(-50%);
+    white-space:nowrap;
+    font-family:"Noto Serif SC",serif;
+    font-size:12px;font-weight:600;
+    color:var(--ink);
+    background:var(--paper);
+    padding:2px 8px;
+    border:1px solid var(--rule);
+  }
+  .gauge h4{
+    font-family:"Noto Serif SC",serif;
+    font-weight:600;
+    font-size:17px;
+    margin: 0 0 6px;
+  }
+  .gauge .desc{
+    font-size:14px;color:var(--ink-soft);
+  }
 
-    .btn {
-      display: inline-block;
-      padding: 13px 22px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: bold;
-      transition: 0.2s ease;
-    }
+  /* ——— 原则/清单 ——— */
+  ul.clean{
+    list-style:none;padding:0;margin: 14px 0 28px;
+  }
+  ul.clean li{
+    position:relative;
+    padding: 12px 0 12px 28px;
+    border-bottom:1px dashed var(--rule);
+    line-height:1.7;
+  }
+  ul.clean li:last-child{border-bottom:none}
+  ul.clean li::before{
+    content:"";
+    position:absolute;
+    left:4px; top:22px;
+    width:10px; height:1px;
+    background: var(--accent);
+  }
+  ul.clean li strong{
+    font-weight:600;
+    color:var(--accent-deep);
+  }
 
-    .btn-primary {
-      background: #2563eb;
-      color: white;
-    }
+  /* ——— 并排两栏 ——— */
+  .twocol{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:0;
+    margin: 28px 0;
+    border:1px solid var(--rule);
+  }
+  .twocol > div{
+    padding:22px 24px;
+  }
+  .twocol > div + div{
+    border-left:1px solid var(--rule);
+  }
+  .twocol h5{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+    margin:0 0 14px;
+    color:var(--ink-mute);
+  }
+  .twocol .plus h5{color:var(--accent)}
+  .twocol .minus h5{color:var(--amber)}
+  .twocol p{margin:0 0 .9em;font-size:15.5px;line-height:1.75}
+  .twocol p:last-child{margin:0}
 
-    .btn-primary:hover {
-      background: #1d4ed8;
-      transform: translateY(-2px);
-    }
+  /* ——— 时间线 ——— */
+  .tline{
+    margin:32px 0;
+    position:relative;
+    padding-left:24px;
+  }
+  .tline::before{
+    content:"";
+    position:absolute;left:6px;top:4px;bottom:4px;
+    width:1px;background:var(--rule);
+  }
+  .tline .item{
+    position:relative;
+    padding: 0 0 26px;
+  }
+  .tline .item::before{
+    content:"";
+    position:absolute;
+    left:-24px; top:10px;
+    width:13px;height:13px;
+    background:var(--paper);
+    border:2px solid var(--accent);
+    border-radius:50%;
+  }
+  .tline .item.warn::before{border-color:var(--amber)}
+  .tline .item .when{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink-mute);
+    margin-bottom:4px;
+  }
+  .tline .item .what{
+    font-family:"Noto Serif SC",serif;
+    font-weight:600;
+    font-size:17px;
+    margin-bottom:6px;
+  }
+  .tline .item .how{
+    color:var(--ink-soft);
+    font-size:15px;line-height:1.7;
+  }
 
-    .btn-secondary {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #e5e7eb;
-    }
+  /* ——— 网格概念图 ——— */
+  .map{
+    margin: 36px 0 20px;
+    border: 1px solid var(--rule);
+    padding: 28px;
+    background:
+      linear-gradient(var(--paper-2), var(--paper-2)) content-box,
+      var(--paper);
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    font-size: 14px;
+  }
+  .map .node{
+    background:var(--paper);
+    border:1px solid var(--rule);
+    padding: 14px 16px;
+    min-height: 86px;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .map .node.accent{
+    background: var(--accent);
+    color:var(--paper);
+    border-color: var(--accent-deep);
+  }
+  .map .node.accent .lbl{color:rgba(244,239,230,.7)}
+  .map .node .lbl{
+    font-family:"JetBrains Mono",monospace;
+    font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink-mute);
+    margin-bottom:6px;
+  }
+  .map .node .ttl{
+    font-family:"Noto Serif SC",serif;
+    font-weight:600;
+    font-size:15px;
+    line-height:1.4;
+  }
+  .map .node .sub{
+    margin-top:6px;
+    font-size:12px;
+    color:var(--ink-mute);
+    line-height:1.5;
+  }
+  .map .node.accent .sub{color:rgba(244,239,230,.7)}
 
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.14);
-      transform: translateY(-2px);
-    }
+  /* ——— 尾页 ——— */
+  .closing{
+    margin-top: 140px;
+    padding-top: 48px;
+    border-top: 1px solid var(--rule);
+  }
+  .closing .final{
+    font-family:"Noto Serif SC",serif;
+    font-weight:700;
+    font-size: clamp(26px, 3.6vw, 34px);
+    line-height:1.45;
+    color:var(--ink);
+    margin-bottom:24px;
+  }
+  .colophon{
+    margin-top:72px;
+    padding-top:24px;
+    border-top:1px dashed var(--rule);
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-mute);
+    line-height:2;
+    display:grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+  }
+  .colophon dt{color:var(--ink);font-weight:500}
+  .colophon dl{margin:0;display:contents}
 
-    section {
-      padding: 64px 0;
-    }
+  /* ——— 响应式 ——— */
+  @media (max-width: 640px){
+    .datarow{grid-template-columns: 1fr}
+    .twocol{grid-template-columns: 1fr}
+    .twocol > div + div{border-left:none;border-top:1px solid var(--rule)}
+    .map{grid-template-columns: 1fr 1fr}
+    .pull{margin: 32px 0; padding: 24px 22px}
+    .chapter{margin-top:64px}
+  }
 
-    .section-title {
-      font-size: 32px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
+  /* ——— 入场动画(克制) ——— */
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(12px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .cover .eyebrow,.cover h1,.cover .subtitle,.cover .signature{
+    animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .cover h1{animation-delay:.1s}
+  .cover .subtitle{animation-delay:.25s}
+  .cover .signature{animation-delay:.4s}
 
-    .section-desc {
-      text-align: center;
-      color: #94a3b8;
-      max-width: 760px;
-      margin: 0 auto 32px;
-    }
-
-    .grid {
-      display: grid;
-      gap: 20px;
-    }
-
-    .tools-grid {
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .resources-grid {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-
-    .card {
-      background: #111827;
-      border: 1px solid #1f2937;
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-      transition: 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: #2563eb;
-    }
-
-    .card h3 {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      color: #cbd5e1;
-      font-size: 15px;
-      margin-bottom: 10px;
-    }
-
-    .meta {
-      font-size: 13px;
-      color: #93c5fd;
-      margin-bottom: 14px;
-    }
-
-    .small-tag {
-      display: inline-block;
-      font-size: 12px;
-      background: rgba(37, 99, 235, 0.15);
-      color: #93c5fd;
-      padding: 5px 10px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-
-    .card-actions {
-      margin-top: 14px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .link-btn {
-      display: inline-block;
-      background: #2563eb;
-      color: white;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .link-btn:hover {
-      background: #1d4ed8;
-    }
-
-    .ghost-btn {
-      display: inline-block;
-      background: transparent;
-      color: #cbd5e1;
-      border: 1px solid #334155;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-
-    .ghost-btn:hover {
-      border-color: #60a5fa;
-      color: #ffffff;
-    }
-
-    .highlight {
-      background: linear-gradient(135deg, #111827 0%, #172554 100%);
-      border: 1px solid #1d4ed8;
-    }
-
-    .recommend-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
-    }
-
-    .recommend-item {
-      background: #0b1220;
-      border: 1px solid #1e293b;
-      border-radius: 16px;
-      padding: 18px;
-    }
-
-    .recommend-item h4 {
-      margin-bottom: 8px;
-      font-size: 19px;
-    }
-
-    .recommend-item p {
-      color: #cbd5e1;
-      font-size: 15px;
-    }
-
-    .about-box {
-      max-width: 900px;
-      margin: 0 auto;
-      background: #111827;
-      border: 1px solid #1f2937;
-      border-radius: 20px;
-      padding: 28px;
-      color: #dbeafe;
-    }
-
-    footer {
-      padding: 30px 0 50px;
-      text-align: center;
-      color: #94a3b8;
-      font-size: 14px;
-      border-top: 1px solid #1f2937;
-      margin-top: 20px;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    @media (max-width: 768px) {
-      header {
-        padding-top: 48px;
-      }
-
-      .card h3 {
-        font-size: 20px;
-      }
-
-      .section-title {
-        font-size: 28px;
-      }
-    }
-  </style>
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.on{opacity:1;transform:none}
+</style>
 </head>
 <body>
-  <header>
-    <div class="container hero">
-      <div class="tag">TKZZ Store · AI 工具导航 + 实用资源整理站</div>
-      <h1>TKZZ Store</h1>
-      <div class="subtitle">帮你更快找到真正好用的 AI 工具</div>
-      <p class="desc">
-        为学生、创作者和新手整理常用 AI 工具与资源。少踩坑，少到处找，点进去就能直接开始用。
-      </p>
-      <div class="hero-buttons">
-        <a class="btn btn-primary" href="#tools">浏览工具</a>
-        <a class="btn btn-secondary" href="#resources">查看资源</a>
-      </div>
-    </div>
+
+<div class="wrap">
+
+  <header class="topbar">
+    <div class="crest"><span class="dot"></span><span>L.J.H — 个人认知报告</span></div>
+    <div class="meta">卷 01 · 2026 / 04</div>
   </header>
 
-  <main>
-    <section id="tools">
-      <div class="container">
-        <h2 class="section-title">AI 工具导航</h2>
-        <p class="section-desc">
-          我把常用工具分成了写作、图片、视频、学习四类。点击按钮就会直接跳转到对应网站。
-        </p>
-
-        <div class="grid tools-grid">
-          <div class="card">
-            <div class="small-tag">写作类</div>
-            <h3>ChatGPT</h3>
-            <p>适合写作、改文案、头脑风暴、学习问答。</p>
-            <div class="meta">适合：新手 / 学生 / 创作者</div>
-            <div class="card-actions">
-              <a class="link-btn" href="https://chatgpt.com" target="_blank">前往使用</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="small-tag">写作类</div>
-            <h3>DeepL 翻译</h3>
-            <p>翻译自然，适合英语学习、网页翻译和文案处理。</p>
-            <div class="meta">适合：英语学习 / 阅读 / 翻译</div>
-            <div class="card-actions">
-              <a class="link-btn" href="https://www.deepl.com" target="_blank">前往使用</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="small-tag">图片类</div>
-            <h3>Canva</h3>
-            <p>做海报、封面、社媒图非常方便，上手快。</p>
-            <div class="meta">适合：设计新手 / 做图 / 演示</div>
-            <div class="card-actions">
-              <a class="link-btn" href="https://www.canva.com" target="_blank">前往使用</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="small-tag">图片类</div>
-            <h3>remove.bg</h3>
-            <p>一键抠图，适合做素材、做海报、做封面。</p>
-            <div class="meta">适合：剪辑 / 美工 / 素材处理</div>
-            <div class="card-actions">
-              <a class="link-btn" href="https://www.remove.bg" target="_blank">前往使用</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="small-tag">视频类</div>
-            <h3>CapCut 剪映</h3>
-            <p>做字幕、剪视频、加特效都比较方便。</p>
-            <div class="meta">适合：短视频 / 剪辑 / 创作者</div>
-            <div class="card-actions">
-              <a class="link-btn" href="https://www.capcut.com" target="_blank">前往使用</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="small-tag">视频类</div>
-            <h3>ElevenLabs</h3>
-            <p>AI 配音和语音生成很强，适合做旁白和角色音。</p>
-            <div class="meta">适合：配音 / 内容制作 / 旁白</div>
-            <div class="card-actions">
-              <a class="link-btn" href="https://elevenlabs.io" target="_blank">前往使用</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="small-tag">学习类</div>
-            <h3>Perplexity</h3>
-            <p>适合快速查资料、搜答案、整理信息。</p>
-            <div class="meta">适合：搜索 / 学习 / 资料整理</div>
-            <div class="card-actions">
-              <a class="link-btn" href="https://www.perplexity.ai" target="_blank">前往使用</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="small-tag">学习类</div>
-            <h3>Notion</h3>
-            <p>适合记笔记、做计划、整理学习内容和项目。</p>
-            <div class="meta">适合：计划管理 / 笔记 / 整理</div>
-            <div class="card-actions">
-              <a class="link-btn" href="https://www.notion.so" target="_blank">前往使用</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="resources">
-      <div class="container">
-        <h2 class="section-title">实用资源区</h2>
-        <p class="section-desc">
-          这里放一些能直接用的模板和资源。现在先做成按钮跳转，后面你可以再换成你自己的页面或下载文件。
-        </p>
-
-        <div class="grid resources-grid">
-          <div class="card highlight">
-            <h3>AI 提问模板</h3>
-            <p>适合不知道怎么向 AI 提问的人。后面你可以把这里改成你自己的模板页面。</p>
-            <div class="card-actions">
-              <a class="link-btn" href="https://chatgpt.com" target="_blank">立即查看</a>
-              <a class="ghost-btn" href="#about">了解说明</a>
-            </div>
-          </div>
-
-          <div class="card highlight">
-            <h3>文案模板区</h3>
-            <p>可用于短视频标题、产品介绍、宣传文案、活动文案。</p>
-            <div class="card-actions">
-              <a class="link-btn" href="https://www.notion.so" target="_blank">打开资源</a>
-            </div>
-          </div>
-
-          <div class="card highlight">
-            <h3>学习工具模板</h3>
-            <p>可以放学习计划、背书打卡、复习清单、错题整理模板。</p>
-            <div class="card-actions">
-              <a class="link-btn" href="https://www.notion.so" target="_blank">查看模板</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="recommend">
-      <div class="container">
-        <h2 class="section-title">精选推荐</h2>
-        <p class="section-desc">
-          不想一个个看？直接看我整理好的推荐入口。
-        </p>
-
-        <div class="recommend-list">
-          <div class="recommend-item">
-            <h4>新手最适合</h4>
-            <p>ChatGPT + Canva。一个负责想法和文字，一个负责把内容做出来。</p>
-          </div>
-
-          <div class="recommend-item">
-            <h4>学生常用</h4>
-            <p>ChatGPT + Perplexity + DeepL。问问题、查资料、翻译都方便。</p>
-          </div>
-
-          <div class="recommend-item">
-            <h4>做视频常用</h4>
-            <p>CapCut + ElevenLabs。剪辑、字幕、配音一套下来很顺。</p>
-          </div>
-
-          <div class="recommend-item">
-            <h4>做图最快</h4>
-            <p>Canva + remove.bg。一个做版式，一个负责抠图。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about">
-      <div class="container">
-        <h2 class="section-title">关于 TKZZ Store</h2>
-        <div class="about-box">
-          <p>
-            TKZZ Store 是一个整理 AI 工具和实用资源的小站。
-            这个网站的目标不是把工具堆得很多，而是把真正能解决实际问题、点进去就能直接用的内容整理出来。
-          </p>
-          <br />
-          <p>
-            后面你可以继续往里面加：
-            自己的资源页、学习模板、AI 提示词、作品展示、下载页，甚至做成你自己的数字资源站。
-          </p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      © 2026 TKZZ Store · AI 工具导航 + 实用资源整理站
+  <!-- 封面 -->
+  <section class="cover">
+    <div class="eyebrow">Personal Cognition Report · Vol.01</div>
+    <h1>基本<span class="mark">在路上</span>,<br>只是节奏,<br>需要重新校准。</h1>
+    <p class="subtitle">这是我给自己写的第一份复盘报告。不是给家长看的成绩单,也不是给投资方看的路演材料——是我把三四月认真拆开、摆在桌面上,问自己一句:我做的事,和我想去的地方,是不是同一个方向。</p>
+    <div class="signature">
+      <span class="name">吕嘉禾 / 智能少年 · 涛哥战队</span>
+      <span class="filler"></span>
+      <span>2026.04</span>
     </div>
-  </footer>
+  </section>
+
+  <!-- 第一章:坐标 -->
+  <div class="chapter reveal">
+    <span class="num">Ⅰ</span>
+    <span class="bar"></span>
+    <span class="tag">Chapter 01 · 坐标</span>
+  </div>
+  <h2 class="section reveal">我先把自己放回那张大图。</h2>
+
+  <p class="reveal">一月一日,涛哥和明哥画了一张图。算力父母、智能少年、原力学校——三端合谋,培养 AI 时代能自学、能生产的下一代。我记得那天的关键词是「塔山」。不是赢,是守。守住关键点,后面才打得通。</p>
+
+  <p class="reveal">我在这张图上的位置很清楚:<strong>智能少年战队的一名学员</strong>。不是旁观者,也不是最核心的生产力,是被押注的「案例」。这套方法论要成立,就要有像我这样的孩子,真的跑出一点东西来——这是我自己给自己设的前提。</p>
+
+  <div class="pull reveal">
+    未被满足的趋势需求,被我的非对称性优势,完美解决。
+    <span class="attr">—— 战略会上定下的一句话。过去三个月,我所有的事,都是在试着把这句话落到我自己身上。</span>
+  </div>
+
+  <!-- 第二章:我的目标 -->
+  <div class="chapter reveal">
+    <span class="num">Ⅱ</span>
+    <span class="bar"></span>
+    <span class="tag">Chapter 02 · 锚点</span>
+  </div>
+  <h2 class="section reveal">我给自己下了三个锚。</h2>
+
+  <p class="lede reveal">这三个锚不是老师给的,是我从一月战略会上听下来,自己翻译成初中生能执行的语言。</p>
+
+  <div class="map reveal">
+    <div class="node accent">
+      <div>
+        <div class="lbl">Anchor 01 · 自学</div>
+        <div class="ttl">用 AI 的方法,把校内学业稳住</div>
+      </div>
+      <div class="sub">语数英,20% 时间,90 分底。</div>
+    </div>
+    <div class="node accent">
+      <div>
+        <div class="lbl">Anchor 02 · 非对称</div>
+        <div class="ttl">英语口语单点突破</div>
+      </div>
+      <div class="sub">口语 → 通往世界的胜负手。</div>
+    </div>
+    <div class="node accent">
+      <div>
+        <div class="lbl">Anchor 03 · 生产</div>
+        <div class="ttl">在真实场景里交付一次</div>
+      </div>
+      <div class="sub">不是练习,是出门打仗。</div>
+    </div>
+  </div>
+
+  <p class="reveal">这三个锚的逻辑关系,我自己是这么理解的——</p>
+  <p class="reveal">第一个锚是「<strong>不下牌桌</strong>」。我不能因为在做很酷的事,就让校内学业垮掉。涛哥讲过,没有学霸,一切「超级」都是空的。这是我的塔山。</p>
+  <p class="reveal">第二个锚是「<strong>挖战壕</strong>」。一个初中生在这个阶段,最能往下挖、最能复利的事,是语言。数理化可以用 AI 辅助,但语感必须亲自泡出来。我把英语口语挑出来,作为我那个「非对称性优势」要扎根的地方。</p>
+  <p class="reveal">第三个锚是「<strong>上牌桌</strong>」。光学不练,这套方法论在我身上不算成立。我必须在真实场景里交付一次——哪怕角色很小,哪怕结果不漂亮。</p>
+
+  <!-- 第三章:做了什么 -->
+  <div class="chapter reveal">
+    <span class="num">Ⅲ</span>
+    <span class="bar"></span>
+    <span class="tag">Chapter 03 · 事实</span>
+  </div>
+  <h2 class="section reveal">三四月,我具体做了什么。</h2>
+
+  <p class="lede reveal">我把所有事实摊开,不修饰。</p>
+
+  <h3 class="sub reveal">自学线</h3>
+
+  <div class="datarow reveal">
+    <div class="cell">
+      <div class="k">Math · 数学</div>
+      <div class="v">92<em>分</em></div>
+      <div class="note">期末测试 · 指定单元已按计划完成。</div>
+    </div>
+    <div class="cell">
+      <div class="k">English · 英语</div>
+      <div class="v">每日<em>不断点</em></div>
+      <div class="note">多邻国口语连续三个月 · 英文原版《西游记》听读中。</div>
+    </div>
+    <div class="cell">
+      <div class="k">Chinese · 语文</div>
+      <div class="v">Ch.11<em>进行中</em></div>
+      <div class="note">《骆驼祥子》精读 · 非速读,按章拆读。</div>
+    </div>
+  </div>
+  <p class="reveal" style="font-size:14px;color:var(--ink-mute);margin-top:4px">这一行数字,是我的塔山。它们还在,说明我没垮。</p>
+
+  <h3 class="sub reveal">生产线</h3>
+
+  <div class="tline reveal">
+    <div class="item">
+      <div class="when">2026 / 03 · 英伟达比赛</div>
+      <div class="what">我是团队里负责资料收集 + 视频剪辑的人</div>
+      <div class="how">角色是后勤型的,不是核心技术。我的具体产出是:从公开资料和技术文档里抓关键信息交给队友,以及独立完成参赛视频——脚本、镜头、配乐、字幕,全流程自己跑。<strong>团队未进入获奖名单,但作品完整交付、视频成片独立完成。</strong></div>
+    </div>
+    <div class="item">
+      <div class="when">2026 / 04 · 原力学校开放日</div>
+      <div class="what">我作为学员,面向几十位参观家长做了一次演讲</div>
+      <div class="how">讲的是我自己三月做了什么、怎么做的、得到了什么。不是照 PPT 念稿,是自己组织语言讲。这次演讲的对象,是潜在的下一批学员家庭——换句话说,我就是那个「案例」。</div>
+    </div>
+  </div>
+
+  <!-- 第四章:核心判定 -->
+  <div class="chapter reveal">
+    <span class="num">Ⅳ</span>
+    <span class="bar"></span>
+    <span class="tag">Chapter 04 · 判定</span>
+  </div>
+  <h2 class="section reveal">做事与目标,偏了吗?</h2>
+
+  <p class="lede reveal">这是这份报告最重要的那个问题。我认真想了很久,答案是——</p>
+
+  <div class="verdict reveal">
+    <div class="label">Verdict · 偏离判定</div>
+    <p class="statement">方向没有偏离。三件事全部落在三个锚上,没有一件是「为了做而做」。但节奏需要调整——学业线保得太稳,生产线的深度还浅。</p>
+  </div>
+
+  <div class="gauge reveal">
+    <h4>当前偏离度</h4>
+    <div class="desc">纵轴是「方向对不对」,横轴是「节奏快不快」。我现在在——</div>
+    <div class="track">
+      <div class="fill" style="width:62%"></div>
+      <div class="marker" style="left:62%"></div>
+    </div>
+    <div class="ticks">
+      <span>方向正确</span>
+      <span>节奏偏慢</span>
+      <span>需要加码</span>
+    </div>
+  </div>
+
+  <p class="reveal">我把偏离拆成两个问题——</p>
+
+  <h3 class="sub reveal">问题一:目标设定,合理吗?</h3>
+  <p class="reveal">合理,但一月定的时候,我对「生产」这件事的理解太浅。</p>
+  <p class="reveal">当时我以为「生产」就是参加一次比赛、做一次演讲。三四月跑下来,我知道涛哥讲的「生产」其实是<strong>一根针捅破天的真实问题</strong>——像琪琪的姐姐粉,像胡太恒的药丸。我现在做的剪辑和演讲,只是生产力的<strong>基础工具</strong>,还不是那根针。</p>
+  <p class="reveal">所以目标本身没错,但我之前对目标的<strong>分辨率</strong>太粗。我以为我在做生产,其实我在做「生产所需的工具」。这不是偏离,是我对地图的理解还不够精细。</p>
+
+  <h3 class="sub reveal">问题二:做事,和目标,对得上吗?</h3>
+
+  <div class="twocol reveal">
+    <div class="plus">
+      <h5>✓ 对得上的部分</h5>
+      <p>数学 92 分,在压缩了时间的前提下拿到——验证了「20% 时间守学业」是可行的。</p>
+      <p>英语走的是复利路线,没有被比赛打断,三个月稳定下来。这件事我最稳。</p>
+      <p>英伟达比赛 + 开放日两次上桌,姿态打开了。下一次再上,就不再是第一次了。</p>
+    </div>
+    <div class="minus">
+      <h5>△ 对不上的部分</h5>
+      <p>我还没有「我自己要解决的那个真问题」——不像琪琪、胡太恒一样,有一个属于自己的、能撬动全局的原型命题。</p>
+      <p>英伟达里我是后勤,不是那个有想法的人。这说明我在团队里的<strong>角色梯度</strong>还没往上走。</p>
+      <p>语文《骆驼祥子》只到第 11 章——这是唯一一条没按我一月预期推进的线。</p>
+    </div>
+  </div>
+
+  <div class="pull reveal">
+    我做的每件事都对,但加起来还没有形成一个属于「吕嘉禾」的回路。
+    <span class="attr">—— 这是我这份报告最诚实的一行字。</span>
+  </div>
+
+  <!-- 第五章:认知升级 -->
+  <div class="chapter reveal">
+    <span class="num">Ⅴ</span>
+    <span class="bar"></span>
+    <span class="tag">Chapter 05 · 认知</span>
+  </div>
+  <h2 class="section reveal">三四月,我这颗脑袋变化在哪。</h2>
+
+  <p class="reveal">如果这份报告的目的是「展示认知结构」,那我得把自己脑子里新装进去的东西说清楚。不是知识点,是看问题的方式。</p>
+
+  <ul class="clean reveal">
+    <li><strong>从「做好事」到「做对事」</strong>——以前我觉得把老师布置的任务做到 100 分就够了。现在我知道,真正重要的是:我做的这件事,在更大的那张图里,是不是关键枢纽。数学做到 92 分,和参加英伟达比赛,在一张图上的权重是不一样的。</li>
+    <li><strong>从「参加」到「交付」</strong>——英伟达比赛让我第一次理解了 deadline、评委、观众意味着什么。课堂作业交上去只是老师看,但一支参赛视频,是几十个陌生人在评判。这两种「作业」完全不是一回事。</li>
+    <li><strong>从「学东西」到「成为案例」</strong>——开放日那天,我站在几十位家长面前,第一次真正理解涛哥说的「把自己活成案例」。不是一句口号,是我在那一刻真的明白:<strong>我学什么不重要,我能不能被别人看见、理解、相信,才是</strong>。</li>
+    <li><strong>从「完成任务」到「寻找自己的那根针」</strong>——三个月前我以为自己的任务是「学东西 + 完成项目」。现在我知道,真正的任务是:在所有这些事里,找到那个只属于我、别人替不了的真问题。</li>
+  </ul>
+
+  <!-- 第六章:下一步 -->
+  <div class="chapter reveal">
+    <span class="num">Ⅵ</span>
+    <span class="bar"></span>
+    <span class="tag">Chapter 06 · 校准</span>
+  </div>
+  <h2 class="section reveal">五六月,我要调的是节奏,不是方向。</h2>
+
+  <div class="verdict reveal">
+    <div class="label">Primary Objective · 五六月核心目标</div>
+    <p class="statement">英语口语进入「和以英语为母语的人自由沟通」的水平。</p>
+  </div>
+
+  <p class="reveal">这个目标很硬,也很孤。但我选它,不是因为它容易——是因为它最符合「非对称性优势」的定义:<strong>需要长时间、别人替不了、而且一旦达到就是分水岭</strong>。这就是我在这盘棋里最该挖的战壕。</p>
+
+  <div class="tline reveal">
+    <div class="item">
+      <div class="when">持续 · 塔山</div>
+      <div class="what">学业底盘继续守住</div>
+      <div class="how">数学单元继续推进 · 保 90+。《骆驼祥子》五月内读完,做一次结构化输出。语文这条线不能再拖。</div>
+    </div>
+    <div class="item">
+      <div class="when">加码 · 战壕</div>
+      <div class="what">英语从「每日口语」升级为「真实对话」</div>
+      <div class="how">多邻国保底 · 每周至少一次英文原版长文本口头复述 · 主动寻找真实英语环境的对话机会。到六月底,我要能毫不犹豫地用英文聊我自己正在做的事。</div>
+    </div>
+    <div class="item warn">
+      <div class="when">突破 · 上桌</div>
+      <div class="what">找到属于我自己的那根针</div>
+      <div class="how">我不再满足于做后勤。下一次上桌,我要带着「我要解决的那个问题」进场。五六月我会用 AI 工具,像跑 OSA 一样,把我自己的「用户任务」跑一遍——我到底想解决什么真问题。</div>
+    </div>
+  </div>
+
+  <!-- 尾页 -->
+  <section class="closing reveal">
+    <p class="final">
+      三个月前,我是一个坐在家长身后听战略会的孩子。<br>
+      三个月后,我开始学着用战略会的语言,审视我自己。
+    </p>
+
+    <p>这份报告我没有写得很燃。燃是对外的,复盘是对内的——对内的东西,第一要诚实,第二才是漂亮。</p>
+
+    <p>我知道这三个月我还远远不是涛哥讲的那种「一鸣惊人」的案例。我可能永远也不是。但我知道一件事:我已经开始用这张地图看自己了。这就是我最大的变化。</p>
+
+    <p style="margin-top:36px;color:var(--ink-mute);font-style:italic">—— 下一份报告,见。</p>
+
+    <dl class="colophon">
+      <dt>作者</dt><dd>吕嘉禾 · 初中 · 智能少年战队</dd>
+      <dt>致</dt><dd>涛哥 · 以及支持这条战线的老师们</dd>
+      <dt>版本</dt><dd>Vol.01 — 2026 年三四月</dd>
+      <dt>下一卷</dt><dd>Vol.02 · 2026 年 06 月末</dd>
+    </dl>
+  </section>
+
+</div>
+
+<script>
+  // 轻度滚动揭示
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
+    });
+  },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
 </body>
 </html>
